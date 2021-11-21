@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-wallet-app
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      run: common-wallet-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: common-wallet-app
+    spec:
+      containers:
+        - image: ratmir123/common.wallet1:ver_0_1_4
+          imagePullPolicy: Always
+          name: common-wallet-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MONGO_URL
+              value: mongodb://mongo:27017/dev

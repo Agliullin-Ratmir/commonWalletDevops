@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongodump-job4
+spec:
+  template:
+    spec:
+      containers:
+      - name: mongodump
+        image: mongo:3.6.17-xenial
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - mongodump --uri='mongodb://mongo:27017' --gzip --archive > /data/dump_archive.gz;
+        - date; echo Mongo database has been backed up
+        volumeMounts:
+        - name: dump-dir
+          mountPath: /data
+      restartPolicy: OnFailure
+      volumes:
+      - name: dump-dir
+        hostPath:
+          path: /usr/dump
